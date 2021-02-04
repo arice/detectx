@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>PluginName</key>
+	<string>DetectX</string>
+	<key>PluginSlug</key>
+	<string>detectx</string>
+	<key>PluginVersion</key>
+	<string>0.1</string>
+	<key>PluginUUID</key>
+	<string>e3fa305d-2110-4200-8be2-136f0f05182e</string>
+	<key>ProgramArguments</key>
+	<array>
+		<string>_check_detectX.plugin</string>
+	</array>
+</dict>
+</plist>
