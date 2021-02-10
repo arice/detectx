@@ -1,31 +1,51 @@
 #! /usr/bin/env python
 
 
-import os, sys, subprocess
+import os, sys, subprocess, json
 from PluginToolkit import *
 
 
 Log.write('Checking DetectX Swift output ...')
 
 
-logFile = '/Library/Mac-MSP/Gruntwork/detectx.txt'
+resultsFile = '/Library/Mac-MSP/Gruntwork/detectx.json'
 
 
 def main():
-	Log.write('Starting plugin ...')
-	output = ''
-	e = 0
+    Log.write('Starting plugin ...')
+    output = ''
+    e = 0
+    issuecount = 0
+    infcount = 0
     
-	if os.path.isfile(logFile):
-		output += '\n\n'
-		output += 'DetectX Results:\n'
-		output += '\n'+(subprocess.check_output(['cat',logFile]))
-		output += '\n\n'
-		output += 'exit status: '+str(e)+'\n'
-		print(output)
-	else:
-		e = 25
-	sys.exit(e)
+    if os.path.isfile(resultsFile):
+        output += '\n\n'
+        output += 'DetectX Results:\n'
+        with open(resultsFile) as results:
+            data = json.load(results)
+        if data ['issues']:
+            for issue in data['issues']:
+                issuecount += 1
+                output += 'Issues found\n'
+                output += 'issue: '+str(issue)+'\n'
+#       output += '\n'+(subprocess.check_output(['cat',resultsFile]))
+#       output += str(issuecount)+' issues found'
+        output += '\n\n'
+        if data['infections']:
+            e = 2
+            output += "WARNING Infections found:"
+            for infection in data['infections']:
+                infcount += 1
+                output += infection+'\n'
+        elif data['issues']:
+            e = 20
+        else:
+            output += 'No issues or infections found\n'
+    else:
+        e = 25
+    output += 'exit status: '+str(e)+'\n'
+    print(output)
+    sys.exit(e)
 
 if __name__ == '__main__':
-	main()
+    main()
